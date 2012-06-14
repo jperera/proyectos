@@ -1,22 +1,23 @@
-package es.uji.curso.contactlist;
+package es.uji.curso.contactlist.personphone;
 
 import java.io.IOException;
-import java.io.Writer;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import es.uji.curso.contactlist.persistence.LineWriter;
 
 public class PersonPhoneRelationTest {
 
 	private static final int TEST_PERSON_ID = 1;
 	private static final String TEST_PHONE = "964000000";
 
-	Writer writer;
+	private LineWriter writer;
 
 	@Before
 	public void setUp() {
-		writer = Mockito.mock(Writer.class);
+		writer = Mockito.mock(LineWriter.class);
 	}
 	
 	@Test

@@ -2,26 +2,29 @@ package es.uji.curso.contactlist;
 
 import java.io.*;
 
+import es.uji.curso.contactlist.persistence.ContactListFilePersistence;
+import es.uji.curso.contactlist.personphone.*;
+
 public class ContactListFactory {
 
 	public PersonPhoneRelation createPersonPhoneRelationFor(String phone, int person) throws IOException {
-		return new PersonPhoneRelation(person, phone, new FileWriter("contact_list_test.data"));
+		return new PersonPhoneRelation(person, phone, new ContactListFilePersistence("contact_list_test.data"));
 	}
 
-	public PersonPhoneRelation createPersonPhoneRelationFor(String line) throws IOException {
+	public PersonPhoneRelation createPersonPhoneRelationFrom(String line) throws IOException {
 		return new PersonPhoneRelation(line, new FileWriter("contact_list_test.data"));
 	}
-	
-	public ContactListQuery createContactListQuery() {
+
+	public BufferedReader getContactListReader() throws FileNotFoundException {
+		return new BufferedReader(new FileReader("contact_list_test.data"));
+	}
+
+	public PersonPhoneRelationFinder createPhoneRelationFinder() {
 		try {
-			return new ContactListQueryImpl(this, new BufferedReader(new FileReader("contact_list_test.data")));
+			return new PersonPhoneRelationFinderImpl(this, getContactListReader());
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e.getMessage());
 		}
 	}
-	
-	public ContactList createContactList() {
-		return new ContactList(this, createContactListQuery());
-	}
-	
+
 }
