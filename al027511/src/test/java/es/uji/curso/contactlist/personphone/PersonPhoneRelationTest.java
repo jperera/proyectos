@@ -24,7 +24,7 @@ public class PersonPhoneRelationTest {
 	public void testStore() throws IOException {
 		PersonPhoneRelation personPhoneRelation = new PersonPhoneRelation(TEST_PERSON_ID, TEST_PHONE, writer);
 		personPhoneRelation.store();
-		Mockito.verify(writer).write(TEST_PERSON_ID + " " + TEST_PHONE + "\n");
+		Mockito.verify(writer).writeLine(TEST_PERSON_ID + " " + TEST_PHONE + "\n");
 	}
 
 }

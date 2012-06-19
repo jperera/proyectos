@@ -35,7 +35,7 @@ public class PersonPhoneRelation {
 	}
 
 	public void store() throws IOException {
-		writer.write(personId + " " + phone + "\n");
+		writer.writeLine(personId + " " + phone + "\n");
 	}
 
 	private String getPhoneIn(String personPhoneRelation) {

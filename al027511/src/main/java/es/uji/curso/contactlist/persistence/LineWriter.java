@@ -4,5 +4,5 @@ import java.io.IOException;
 
 public interface LineWriter {
 
-	public void write(String line) throws IOException;
+	public void writeLine(String line) throws IOException;
 }

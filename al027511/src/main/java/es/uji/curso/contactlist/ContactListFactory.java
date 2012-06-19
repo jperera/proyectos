@@ -15,13 +15,13 @@ public class ContactListFactory {
 		return new PersonPhoneRelation(line, new FileWriter("contact_list_test.data"));
 	}
 
-	public BufferedReader getContactListReader() throws FileNotFoundException {
-		return new BufferedReader(new FileReader("contact_list_test.data"));
+	public ContactListFilePersistence getPersistence() throws FileNotFoundException {
+		return new ContactListFilePersistence("contact_list_test.data");
 	}
 
 	public PersonPhoneRelationFinder createPhoneRelationFinder() {
 		try {
-			return new PersonPhoneRelationFinderImpl(this, getContactListReader());
+			return new PersonPhoneRelationFinderImpl(this, getPersistence());
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e.getMessage());
 		}

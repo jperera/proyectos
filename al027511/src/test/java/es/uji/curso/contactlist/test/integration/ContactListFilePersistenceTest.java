@@ -2,40 +2,55 @@ package es.uji.curso.contactlist.test.integration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import junit.framework.Assert;
 
-import org.junit.After;
-import org.junit.Test;
+import org.junit.*;
 
 import es.uji.curso.contactlist.persistence.ContactListFilePersistence;
 
 public class ContactListFilePersistenceTest {
 
 	private static final String FILE_FULL_PATH_SAMPLE = "test\\file.data";
-	private static final String LINE_SAMPLE = "this is a test";
+	private static final String LINE_SAMPLE1 = "this is a test";
+	private static final String LINE_SAMPLE2 = "another line";
+	private ContactListFilePersistence persistence;
+
+	@Before
+	public void setUp() {
+		persistence = new ContactListFilePersistence(FILE_FULL_PATH_SAMPLE);
+	}
 
 	@Test
 	public void testReadElementWrited() throws IOException {
-		ContactListFilePersistence persistence = new ContactListFilePersistence(FILE_FULL_PATH_SAMPLE);
-	
-		persistence.write(LINE_SAMPLE);
-		
-		Assert.assertEquals(LINE_SAMPLE, persistence.readline());
+		persistence.writeLine(LINE_SAMPLE1);
+
+		Assert.assertEquals(LINE_SAMPLE1, persistence.readLines().get(0));
 	}
-	
+
 	@Test
 	public void testDifferentPersistenceWithSameName() throws IOException {
-		
-		ContactListFilePersistence persistence1 = new ContactListFilePersistence(FILE_FULL_PATH_SAMPLE);
 		ContactListFilePersistence persistence2 = new ContactListFilePersistence(FILE_FULL_PATH_SAMPLE);
-		
-		persistence1.write(LINE_SAMPLE);
-		
-		Assert.assertEquals(persistence1.readline(), persistence2.readline());
-		Assert.assertEquals(LINE_SAMPLE, persistence1.readline());
+
+		persistence.writeLine(LINE_SAMPLE1);
+
+		String lineRead = persistence.readLines().get(0);
+		Assert.assertEquals(lineRead, persistence2.readLines().get(0));
+		Assert.assertEquals(LINE_SAMPLE1, lineRead);
 	}
-	
+
+	@Test
+	public void testReadTwoLinesWhenReadTwoLines() throws IOException {
+		persistence.writeLine(LINE_SAMPLE1);
+		persistence.writeLine(LINE_SAMPLE2);
+
+		List<String> lines = persistence.readLines();
+
+		Assert.assertEquals(LINE_SAMPLE1, lines.get(0));
+		Assert.assertEquals(LINE_SAMPLE2, lines.get(1));
+	}
+
 	@After
 	public void tearDown() {
 		File file = new File(FILE_FULL_PATH_SAMPLE);
