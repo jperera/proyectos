@@ -12,7 +12,7 @@ import es.uji.curso.contactlist.persistence.ContactListFilePersistence;
 
 public class ContactListFilePersistenceTest {
 
-	private static final String FILE_FULL_PATH_SAMPLE = "test\\file.data";
+	private static final String FILE_FULL_PATH_SAMPLE = "src\\test\\resources\\file.data";
 	private static final String LINE_SAMPLE1 = "this is a test";
 	private static final String LINE_SAMPLE2 = "another line";
 	private ContactListFilePersistence persistence;
