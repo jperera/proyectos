@@ -16,20 +16,18 @@ import es.uji.curso.contactlist.ContactListFactory;
 import es.uji.curso.contactlist.persistence.LinesReader;
 import es.uji.curso.contactlist.personphone.PersonPhoneRelation;
 import es.uji.curso.contactlist.personphone.PersonPhoneRelationFinderImpl;
+import es.uji.curso.test.TestUtils;
 
 public class PersonPhoneRelationFinderTest {
 
 	private static final String LINE_ELEMENT_SEPARATOR = " ";
-	private static final String TEST_PHONE_NUMBER1 = "964000001";
-	private static final String TEST_PHONE_NUMBER2 = "964000002";
-	private static final int TEST_ID1 = 1;
 	private static final int TEST_ID2 = 2;
-	private static final String TEST_PERSON1_PHONE1_RELATION_LINE = TEST_ID1 + LINE_ELEMENT_SEPARATOR
-			+ TEST_PHONE_NUMBER1;
-	private static final String TEST_PERSON1_PHONE2_RELATION_LINE = TEST_ID1 + LINE_ELEMENT_SEPARATOR
-			+ TEST_PHONE_NUMBER2;
+	private static final String TEST_PERSON1_PHONE1_RELATION_LINE = TestUtils.TEST_PERSON_ID1 + LINE_ELEMENT_SEPARATOR
+			+ TestUtils.TEST_PHONE_NUMBER1;
+	private static final String TEST_PERSON1_PHONE2_RELATION_LINE = TestUtils.TEST_PERSON_ID1 + LINE_ELEMENT_SEPARATOR
+			+ TestUtils.TEST_PHONE_NUMBER2;
 	private static final String TEST_PERSON2_PHONE2_RELATION_LINE = TEST_ID2 + LINE_ELEMENT_SEPARATOR
-			+ TEST_PHONE_NUMBER2;
+			+ TestUtils.TEST_PHONE_NUMBER2;
 
 	private PersonPhoneRelationFinderImpl query;
 	private LinesReader reader;
@@ -44,10 +42,10 @@ public class PersonPhoneRelationFinderTest {
 
 	@Test
 	public void testGetOnePhoneByIdWhenOnlyOnePhoneWithSameIdInReader() throws IOException {
-		List<String> phoneList = getTestPhoneListWith(TEST_PHONE_NUMBER1);
+		List<String> phoneList = getTestPhoneListWith(TestUtils.TEST_PHONE_NUMBER1);
 
 		initQueryWithMockReaderAndMockFactory();
-		Assert.assertEquals(phoneList, query.findPhonesByPersonId(TEST_ID1));
+		Assert.assertEquals(phoneList, query.findPhonesByPersonId(TestUtils.TEST_PERSON_ID1));
 	}
 
 	@Test
@@ -58,7 +56,7 @@ public class PersonPhoneRelationFinderTest {
 
 	@Test
 	public void testGetManyPhonesByIdWhenManyPhoneForPersonInReader() throws IOException {
-		List<String> phoneList = getTestPhoneListWith(TEST_PHONE_NUMBER1, TEST_PHONE_NUMBER2);
+		List<String> phoneList = getTestPhoneListWith(TestUtils.TEST_PHONE_NUMBER1, TestUtils.TEST_PHONE_NUMBER2);
 		List<String> expectedRelationsList = getRelationListWith(TEST_PERSON1_PHONE1_RELATION_LINE,
 				TEST_PERSON1_PHONE2_RELATION_LINE);
 
@@ -67,7 +65,7 @@ public class PersonPhoneRelationFinderTest {
 		initFactoryMockWithPersonPhoneRelationId1Phone1();
 		initFactoryMockWithPersonPhoneRelationId1Phone2();
 
-		Assert.assertEquals(phoneList, query.findPhonesByPersonId(TEST_ID1));
+		Assert.assertEquals(phoneList, query.findPhonesByPersonId(TestUtils.TEST_PERSON_ID1));
 	}
 
 	private List<String> getRelationListWith(String... personPhoneRelations) {
@@ -81,7 +79,7 @@ public class PersonPhoneRelationFinderTest {
 
 	@Test
 	public void testGetOnePhoneByIdWhenManyPersonsInReader() throws IOException {
-		List<String> phoneList = getTestPhoneListWith(TEST_PHONE_NUMBER1);
+		List<String> phoneList = getTestPhoneListWith(TestUtils.TEST_PHONE_NUMBER1);
 
 		List<String> personPhoneRelations = new ArrayList<String>();
 		personPhoneRelations.add(TEST_PERSON1_PHONE1_RELATION_LINE);
@@ -91,7 +89,7 @@ public class PersonPhoneRelationFinderTest {
 		initFactoryMockWithPersonPhoneRelationId1Phone1();
 		initFactoryMockWithPersonPhoneRelationId2Phone2();
 
-		Assert.assertEquals(phoneList, query.findPhonesByPersonId(TEST_ID1));
+		Assert.assertEquals(phoneList, query.findPhonesByPersonId(TestUtils.TEST_PERSON_ID1));
 	}
 
 	private List<String> getTestPhoneListWith(String... phones) {
@@ -128,23 +126,23 @@ public class PersonPhoneRelationFinderTest {
 	private PersonPhoneRelation getMockPersonPhoneRelationId1Phone1() {
 		PersonPhoneRelation personPhoneRelation = mock(PersonPhoneRelation.class);
 
-		when(personPhoneRelation.getPhone()).thenReturn(TEST_PHONE_NUMBER1);
-		when(personPhoneRelation.isPerson(TEST_ID1)).thenReturn(true);
+		when(personPhoneRelation.getPhone()).thenReturn(TestUtils.TEST_PHONE_NUMBER1);
+		when(personPhoneRelation.isPerson(TestUtils.TEST_PERSON_ID1)).thenReturn(true);
 		return personPhoneRelation;
 	}
 
 	private PersonPhoneRelation getMockPersonPhoneRelationId1Phone2() {
 		PersonPhoneRelation personPhoneRelation = mock(PersonPhoneRelation.class);
 
-		when(personPhoneRelation.getPhone()).thenReturn(TEST_PHONE_NUMBER2);
-		when(personPhoneRelation.isPerson(TEST_ID1)).thenReturn(true);
+		when(personPhoneRelation.getPhone()).thenReturn(TestUtils.TEST_PHONE_NUMBER2);
+		when(personPhoneRelation.isPerson(TestUtils.TEST_PERSON_ID1)).thenReturn(true);
 		return personPhoneRelation;
 	}
 
 	private PersonPhoneRelation getMockPersonPhoneRelationId2Phone2() {
 		PersonPhoneRelation personPhoneRelation = mock(PersonPhoneRelation.class);
 
-		when(personPhoneRelation.getPhone()).thenReturn(TEST_PHONE_NUMBER2);
+		when(personPhoneRelation.getPhone()).thenReturn(TestUtils.TEST_PHONE_NUMBER2);
 		when(personPhoneRelation.isPerson(TEST_ID2)).thenReturn(true);
 		return personPhoneRelation;
 	}

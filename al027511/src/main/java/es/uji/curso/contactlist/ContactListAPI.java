@@ -3,26 +3,21 @@ package es.uji.curso.contactlist;
 import java.io.IOException;
 import java.util.List;
 
-import es.uji.curso.contactlist.personphone.PersonPhoneRelation;
-import es.uji.curso.contactlist.personphone.PersonPhoneRelationFinder;
-
 public class ContactListAPI {
-	
-	private static ContactListFactory factory;
-	private static PersonPhoneRelationFinder personPhoneRelationFinder;
-	
+
+	private static ContactList contactList;
+
 	static {
-		factory = new ContactListFactory();
-		personPhoneRelationFinder = factory.createPhoneRelationFinder();
+		ContactListFactory factory = new ContactListFactory();
+		contactList = factory.createContactList();
 	}
 
 	public static void assignPhoneToPerson(String phone, int person) throws IOException {
-		PersonPhoneRelation personPhoneRelation = factory.createPersonPhoneRelationFor(phone, person);
-		personPhoneRelation.store();
+		contactList.assignPhoneToPerson(phone, person);
 	}
 
 	public static List<String> getPhonesById(int personId) throws IOException {
-		return personPhoneRelationFinder.findPhonesByPersonId(personId);
+		return contactList.getPhoneById(personId);
 	}
 
 }

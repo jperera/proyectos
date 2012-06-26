@@ -1,4 +1,4 @@
-package es.uji.curso.contactlist.test.integration;
+package es.uji.curso.test.integration;
 
 import java.io.File;
 import java.io.IOException;

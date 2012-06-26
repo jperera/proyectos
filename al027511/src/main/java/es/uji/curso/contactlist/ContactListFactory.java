@@ -4,6 +4,8 @@ import java.io.*;
 
 import es.uji.curso.contactlist.persistence.ContactListFilePersistence;
 import es.uji.curso.contactlist.personphone.*;
+import es.uji.curso.contactlist.validation.ContactListValidator;
+import es.uji.curso.contactlist.validation.PhoneValidator;
 
 public class ContactListFactory {
 
@@ -19,12 +21,16 @@ public class ContactListFactory {
 		return new ContactListFilePersistence("contact_list_test.data");
 	}
 
-	public PersonPhoneRelationFinder createPhoneRelationFinder() {
+	public PersonPhoneRelationFinder createPersonPhoneRelationFinder() {
 		try {
 			return new PersonPhoneRelationFinderImpl(this, getPersistence());
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e.getMessage());
 		}
+	}
+
+	public ContactList createContactList() {
+		return new ContactList(this, new PhoneValidator(), createPersonPhoneRelationFinder());
 	}
 
 }
