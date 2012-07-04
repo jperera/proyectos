@@ -41,7 +41,7 @@ public class ContactListFilePersistence implements LinesReader, LineWriter {
 	}
 
 	private boolean isProcesableLine(String line) {
-		return line != null;
+		return line != null && !line.isEmpty();
 	}
 
 }

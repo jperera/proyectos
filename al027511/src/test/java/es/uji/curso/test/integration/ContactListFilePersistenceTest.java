@@ -9,17 +9,18 @@ import junit.framework.Assert;
 import org.junit.*;
 
 import es.uji.curso.contactlist.persistence.ContactListFilePersistence;
+import es.uji.curso.test.TestUtils;
 
 public class ContactListFilePersistenceTest {
 
-	private static final String FILE_FULL_PATH_SAMPLE = "src\\test\\resources\\file.data";
+
 	private static final String LINE_SAMPLE1 = "this is a test";
 	private static final String LINE_SAMPLE2 = "another line";
 	private ContactListFilePersistence persistence;
 
 	@Before
 	public void setUp() {
-		persistence = new ContactListFilePersistence(FILE_FULL_PATH_SAMPLE);
+		persistence = new ContactListFilePersistence(TestUtils.FILE_FULL_PATH_SAMPLE);
 	}
 
 	@Test
@@ -31,7 +32,7 @@ public class ContactListFilePersistenceTest {
 
 	@Test
 	public void testDifferentPersistenceWithSameName() throws IOException {
-		ContactListFilePersistence persistence2 = new ContactListFilePersistence(FILE_FULL_PATH_SAMPLE);
+		ContactListFilePersistence persistence2 = new ContactListFilePersistence(TestUtils.FILE_FULL_PATH_SAMPLE);
 
 		persistence.writeLine(LINE_SAMPLE1);
 
@@ -53,7 +54,7 @@ public class ContactListFilePersistenceTest {
 
 	@After
 	public void tearDown() {
-		File file = new File(FILE_FULL_PATH_SAMPLE);
+		File file = new File(TestUtils.FILE_FULL_PATH_SAMPLE);
 		file.delete();
 	}
 

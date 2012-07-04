@@ -10,11 +10,11 @@ import es.uji.curso.contactlist.validation.PhoneValidator;
 public class ContactListFactory {
 
 	public PersonPhoneRelation createPersonPhoneRelationFor(String phone, int person) throws IOException {
-		return new PersonPhoneRelation(person, phone, new ContactListFilePersistence("contact_list_test.data"));
+		return new PersonPhoneRelation(person, phone, getPersistence());
 	}
 
 	public PersonPhoneRelation createPersonPhoneRelationFrom(String line) throws IOException {
-		return new PersonPhoneRelation(line, new FileWriter("contact_list_test.data"));
+		return new PersonPhoneRelation(line, getPersistence());
 	}
 
 	public ContactListFilePersistence getPersistence() throws FileNotFoundException {

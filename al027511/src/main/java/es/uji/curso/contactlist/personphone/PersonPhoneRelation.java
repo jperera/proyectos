@@ -15,9 +15,10 @@ public class PersonPhoneRelation {
 	private String phone;
 	private LineWriter writer;
 	
-	public PersonPhoneRelation(String personPhoneRelation, Writer writer) {
+	public PersonPhoneRelation(String personPhoneRelation, LineWriter writer) {
 		this.personId = getPersonIdIn(personPhoneRelation);
 		this.phone = getPhoneIn(personPhoneRelation);
+		this.writer = writer;
 	}
 
 	public PersonPhoneRelation(int person, String phone, LineWriter writer) {
@@ -35,7 +36,7 @@ public class PersonPhoneRelation {
 	}
 
 	public void store() throws IOException {
-		writer.writeLine(personId + " " + phone + "\n");
+		writer.writeLine(personId + " " + phone);
 	}
 
 	private String getPhoneIn(String personPhoneRelation) {

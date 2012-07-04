@@ -6,6 +6,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>al027511</name>
 
+	<properties>
+		<jbehave.version>3.3.2</jbehave.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -17,6 +20,11 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>1.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jbehave</groupId>
+			<artifactId>jbehave-core</artifactId>
+			<version>${jbehave.version}</version>
 		</dependency>
 	</dependencies>
 </project>
