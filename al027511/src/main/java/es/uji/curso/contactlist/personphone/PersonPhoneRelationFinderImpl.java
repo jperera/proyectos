@@ -4,16 +4,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.uji.curso.contactlist.ContactListFactory;
 import es.uji.curso.contactlist.persistence.LinesReader;
 
 public class PersonPhoneRelationFinderImpl implements PersonPhoneRelationFinder {
 
-	private ContactListFactory factory;
+	private static final int PERSON_ID_POSITION_IN_PERSON_PHONE_RELATION = 0;
+	private static final int PHONE_POSITION_IN_PERSON_PHONE_RELATION = 1;
+	private static final String LINE_ELEMENT_SEPARATOR = " ";
+
 	private LinesReader reader;
 
-	public PersonPhoneRelationFinderImpl(ContactListFactory factory, LinesReader reader) {
-		this.factory = factory;
+	public PersonPhoneRelationFinderImpl(LinesReader reader) {
 		this.reader = reader;
 	}
 
@@ -21,22 +22,26 @@ public class PersonPhoneRelationFinderImpl implements PersonPhoneRelationFinder 
 		List<String> phones = new ArrayList<String>();
 
 		for (String personPhoneRawLine : reader.readLines()) {
-			PersonPhoneRelation personPhoneRelation = createFromRawLine(personPhoneRawLine);
-			addPhoneToListWithPersonFilter(personPhoneRelation, phones, personId);
+			addPhoneToListWithPersonFilter(personPhoneRawLine, phones, personId);
 		}
 
 		return phones;
 	}
 
-	private PersonPhoneRelation createFromRawLine(String personPhoneRawLine) throws IOException {
-		return factory.createPersonPhoneRelationFrom(personPhoneRawLine);
+	private void addPhoneToListWithPersonFilter(String personPhoneRawLine, List<String> phones, int personId) {
+		if (getPersonIdIn(personPhoneRawLine) == personId) {
+			phones.add(getPhoneIn(personPhoneRawLine));
+		}
 	}
 
-	private void addPhoneToListWithPersonFilter(PersonPhoneRelation personPhoneRelation, List<String> phones,
-			int personId) {
-		if (personPhoneRelation.isPerson(personId)) {
-			phones.add(personPhoneRelation.getPhone());
-		}
+	private String getPhoneIn(String personPhoneRelation) {
+		String[] lineElements = personPhoneRelation.split(LINE_ELEMENT_SEPARATOR);
+		return lineElements[PHONE_POSITION_IN_PERSON_PHONE_RELATION];
+	}
+
+	private int getPersonIdIn(String personPhoneRelation) {
+		String[] lineElements = personPhoneRelation.split(LINE_ELEMENT_SEPARATOR);
+		return Integer.parseInt(lineElements[PERSON_ID_POSITION_IN_PERSON_PHONE_RELATION]);
 	}
 
 }

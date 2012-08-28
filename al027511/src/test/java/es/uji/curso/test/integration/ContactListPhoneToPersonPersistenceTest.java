@@ -1,5 +1,9 @@
 package es.uji.curso.test.integration;
 
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -9,21 +13,24 @@ import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Test;
 
+import es.uji.curso.contactlist.ContactList;
 import es.uji.curso.contactlist.persistence.ContactListFilePersistence;
-import es.uji.curso.contactlist.personphone.PersonPhoneRelation;
+import es.uji.curso.contactlist.validation.ContactListValidator;
 import es.uji.curso.test.TestUtils;
 
-public class PersonPhoneRelationPersistenceTest {
+public class ContactListPhoneToPersonPersistenceTest {
 
 	@Test
 	public void testDoubleInsertionAndRetrieveRelation() throws IOException {
 		ContactListFilePersistence persistence = new ContactListFilePersistence(TestUtils.FILE_FULL_PATH_SAMPLE);
-		PersonPhoneRelation relationPerson1Phone1 = new PersonPhoneRelation(TestUtils.TEST_PERSON1_PHONE1_RELATION_LINE, persistence);
-		PersonPhoneRelation relationPerson1Phone2 = new PersonPhoneRelation(TestUtils.TEST_PERSON1_PHONE2_RELATION_LINE, persistence);
-	
-		relationPerson1Phone1.store();
-		relationPerson1Phone2.store();
-		
+		ContactListValidator validator = mock(ContactListValidator.class);
+		ContactList contactList = new ContactList(persistence, validator, null);
+
+		when(validator.isValid(anyString())).thenReturn(true);
+
+		contactList.assignPhoneToPerson(TestUtils.TEST_PHONE_NUMBER1, TestUtils.TEST_PERSON_ID1);
+		contactList.assignPhoneToPerson(TestUtils.TEST_PHONE_NUMBER2, TestUtils.TEST_PERSON_ID1);
+
 		List<String> lines = persistence.readLines();
 
 		Assert.assertEquals(TestUtils.TEST_PERSON1_PHONE1_RELATION_LINE, lines.get(0));

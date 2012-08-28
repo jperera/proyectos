@@ -1,5 +1,6 @@
 package es.uji.curso.test.acceptance.phones;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -27,7 +28,13 @@ public class PersonPhonesSteps {
 
 	@Then("the person has the phone")
 	public void testPersonHasTheAddress() throws IOException {
-		List<String> phoneList = ContactListAPI.getPhonesById(person);			
+		List<String> phoneList = ContactListAPI.getPhonesById(person);
 		Assert.assertEquals(phone, phoneList.get(0));
+		tearDown();
+	}
+
+	private void tearDown() {
+		File file = new File("contact_list_test.data");
+		file.delete();
 	}
 }

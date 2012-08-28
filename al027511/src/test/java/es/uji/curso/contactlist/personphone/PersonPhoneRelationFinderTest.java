@@ -3,7 +3,7 @@ package es.uji.curso.contactlist.personphone;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,23 +12,18 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import es.uji.curso.contactlist.ContactListFactory;
 import es.uji.curso.contactlist.persistence.LinesReader;
-import es.uji.curso.contactlist.personphone.PersonPhoneRelation;
-import es.uji.curso.contactlist.personphone.PersonPhoneRelationFinderImpl;
 import es.uji.curso.test.TestUtils;
 
 public class PersonPhoneRelationFinderTest {
 
 	private PersonPhoneRelationFinderImpl query;
 	private LinesReader reader;
-	private ContactListFactory factory;
 
 	@Before
 	public void setUp() {
 		reader = mock(LinesReader.class);
-		factory = mock(ContactListFactory.class);
-		query = new PersonPhoneRelationFinderImpl(factory, reader);
+		query = new PersonPhoneRelationFinderImpl(reader);
 	}
 
 	@Test
@@ -53,9 +48,6 @@ public class PersonPhoneRelationFinderTest {
 
 		when(reader.readLines()).thenReturn(expectedRelationsList);
 
-		initFactoryMockWithPersonPhoneRelationId1Phone1();
-		initFactoryMockWithPersonPhoneRelationId1Phone2();
-
 		Assert.assertEquals(phoneList, query.findPhonesByPersonId(TestUtils.TEST_PERSON_ID1));
 	}
 
@@ -77,9 +69,6 @@ public class PersonPhoneRelationFinderTest {
 		personPhoneRelations.add(TestUtils.TEST_PERSON2_PHONE2_RELATION_LINE);
 		when(reader.readLines()).thenReturn(personPhoneRelations);
 
-		initFactoryMockWithPersonPhoneRelationId1Phone1();
-		initFactoryMockWithPersonPhoneRelationId2Phone2();
-
 		Assert.assertEquals(phoneList, query.findPhonesByPersonId(TestUtils.TEST_PERSON_ID1));
 	}
 
@@ -92,49 +81,10 @@ public class PersonPhoneRelationFinderTest {
 	}
 
 	private void initQueryWithMockReaderAndMockFactory() throws IOException {
-		initFactoryMockWithPersonPhoneRelationId1Phone1();
 		List<String> expectedPhoneList = new ArrayList<String>();
 
 		expectedPhoneList.add(TestUtils.TEST_PERSON1_PHONE1_RELATION_LINE);
 		when(reader.readLines()).thenReturn(expectedPhoneList);
 	}
-
-	private void initFactoryMockWithPersonPhoneRelationId1Phone1() throws IOException {
-		PersonPhoneRelation personPhoneRelation = getMockPersonPhoneRelationId1Phone1();
-		when(factory.createPersonPhoneRelationFrom(TestUtils.TEST_PERSON1_PHONE1_RELATION_LINE)).thenReturn(personPhoneRelation);
-	}
-
-	private void initFactoryMockWithPersonPhoneRelationId1Phone2() throws IOException {
-		PersonPhoneRelation personPhoneRelation = getMockPersonPhoneRelationId1Phone2();
-		when(factory.createPersonPhoneRelationFrom(TestUtils.TEST_PERSON1_PHONE2_RELATION_LINE)).thenReturn(personPhoneRelation);
-	}
-
-	private void initFactoryMockWithPersonPhoneRelationId2Phone2() throws IOException {
-		PersonPhoneRelation personPhoneRelation = getMockPersonPhoneRelationId2Phone2();
-		when(factory.createPersonPhoneRelationFrom(TestUtils.TEST_PERSON2_PHONE2_RELATION_LINE)).thenReturn(personPhoneRelation);
-	}
-
-	private PersonPhoneRelation getMockPersonPhoneRelationId1Phone1() {
-		PersonPhoneRelation personPhoneRelation = mock(PersonPhoneRelation.class);
-
-		when(personPhoneRelation.getPhone()).thenReturn(TestUtils.TEST_PHONE_NUMBER1);
-		when(personPhoneRelation.isPerson(TestUtils.TEST_PERSON_ID1)).thenReturn(true);
-		return personPhoneRelation;
-	}
-
-	private PersonPhoneRelation getMockPersonPhoneRelationId1Phone2() {
-		PersonPhoneRelation personPhoneRelation = mock(PersonPhoneRelation.class);
-
-		when(personPhoneRelation.getPhone()).thenReturn(TestUtils.TEST_PHONE_NUMBER2);
-		when(personPhoneRelation.isPerson(TestUtils.TEST_PERSON_ID1)).thenReturn(true);
-		return personPhoneRelation;
-	}
-
-	private PersonPhoneRelation getMockPersonPhoneRelationId2Phone2() {
-		PersonPhoneRelation personPhoneRelation = mock(PersonPhoneRelation.class);
-
-		when(personPhoneRelation.getPhone()).thenReturn(TestUtils.TEST_PHONE_NUMBER2);
-		when(personPhoneRelation.isPerson(TestUtils.TEST_ID2)).thenReturn(true);
-		return personPhoneRelation;
-	}
+	
 }

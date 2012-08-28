@@ -1,5 +1,6 @@
 package es.uji.curso.contactlist;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -9,7 +10,12 @@ public class ContactListAPI {
 
 	static {
 		ContactListFactory factory = new ContactListFactory();
-		contactList = factory.createContactList();
+		try {
+			contactList = factory.createContactList();
+		} catch (FileNotFoundException e) {
+			contactList = null;
+		}
+
 	}
 
 	public static void assignPhoneToPerson(String phone, int person) throws IOException {

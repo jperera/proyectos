@@ -4,12 +4,17 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactListFilePersistence implements LinesReader, LineWriter {
+public class ContactListFilePersistence implements LinesReader, PersonPhoneRelationStorer {
 
+	private static final String WHITE_SPACE = " ";
 	private String fileName;
 
 	public ContactListFilePersistence(String fileName) {
 		this.fileName = fileName;
+	}
+
+	public void storeRelationOf(int person, String phone) throws IOException {
+		writeLine(person + WHITE_SPACE + phone);
 	}
 
 	public void writeLine(String line) throws IOException {
@@ -43,5 +48,6 @@ public class ContactListFilePersistence implements LinesReader, LineWriter {
 	private boolean isProcesableLine(String line) {
 		return line != null && !line.isEmpty();
 	}
+
 
 }

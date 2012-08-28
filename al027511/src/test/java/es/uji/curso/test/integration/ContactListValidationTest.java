@@ -1,16 +1,14 @@
 package es.uji.curso.test.integration;
 
-import static org.mockito.Mockito.*; 
-
 import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import es.uji.curso.contactlist.ContactList;
-import es.uji.curso.contactlist.ContactListFactory;
 import es.uji.curso.contactlist.exceptions.NotValidPhoneException;
-import es.uji.curso.contactlist.personphone.PersonPhoneRelation;
+import es.uji.curso.contactlist.persistence.PersonPhoneRelationStorer;
 import es.uji.curso.contactlist.validation.ContactListValidator;
 import es.uji.curso.contactlist.validation.PhoneValidator;
 import es.uji.curso.test.TestUtils;
@@ -21,19 +19,13 @@ public class ContactListValidationTest {
 	
 	private ContactListValidator validator;
 	private ContactList contactList;
-	private ContactListFactory factory;
+	private PersonPhoneRelationStorer writer;
 
 	@Before
 	public void setUp() throws IOException {
-		PersonPhoneRelation personPhoneRelation = mock(PersonPhoneRelation.class);
-		factory = mock(ContactListFactory.class);
 		validator = new PhoneValidator();
-		
-		contactList = new ContactList(factory, validator, null);		
-
-		when(factory.createPersonPhoneRelationFor(TestUtils.TEST_PHONE_NUMBER1, TestUtils.TEST_PERSON_ID1)).thenReturn(
-				personPhoneRelation);
-		
+		writer = Mockito.mock(PersonPhoneRelationStorer.class);
+		contactList = new ContactList(writer, validator, null);
 	}
 	
 	@Test(expected=NotValidPhoneException.class)
